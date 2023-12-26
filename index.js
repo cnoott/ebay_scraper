@@ -3,8 +3,9 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-
-const PROFILE_LINK = 'https://www.ebay.com/sch/i.html?item=285464377160&rt=nc&_trksid=p4429486.m3561.l161211&_ssn=roc_seller';
+const readline = require('readline');
+  
+//const PROFILE_LINK = 'https://www.ebay.com/sch/i.html?item=285464377160&rt=nc&_trksid=p4429486.m3561.l161211&_ssn=roc_seller';
 
 async function downloadImage(url, index, dirPath) {
     try {
@@ -27,8 +28,21 @@ async function downloadImage(url, index, dirPath) {
     }
 }
 
+function getProfileUrlInput(query) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    return new Promise(resolve => rl.question(query, ans => {
+        rl.close();
+        resolve(ans);
+    }));
+}
+
 (async function run() {
   driver = await new Builder().forBrowser('chrome').build();
+  let PROFILE_LINK = await getProfileUrlInput('Enter eBay profile url: ');
   try { 
     await driver.manage().window().setRect({width: 1920, height: 1080});
     await driver.get(PROFILE_LINK);
