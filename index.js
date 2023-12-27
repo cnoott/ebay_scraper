@@ -60,13 +60,14 @@ function getProfileUrlInput(query) {
       let title = await item.findElement(By.css('span[role=heading]')).getText();
       console.log('title', title);
       let dirName = title.replace(/[\/:*?"<>|]/g, '_');
-      
-      let dirPath = path.join(__dirname, 'downloads', dirName);
-      fs.mkdirSync(dirPath, { recursive: true });  
-      let textFilePath = path.join(dirPath, 'info.txt');
-      fs.appendFileSync(textFilePath, title);
+    
 
       if (conditionText.includes('Brand New')) {
+          let dirPath = path.join(__dirname, 'downloads', dirName);
+          fs.mkdirSync(dirPath, { recursive: true });  
+          let textFilePath = path.join(dirPath, 'info.txt');
+          fs.appendFileSync(textFilePath, title);
+
           const linkElm = await item.findElement(By.css('a[class=s-item__link]'));
           const url = await linkElm.getAttribute('href');
 
